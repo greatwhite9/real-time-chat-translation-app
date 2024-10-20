@@ -1,21 +1,22 @@
 import React from "react";
-import { Spin, Icon } from "antd";
+import { Spin } from "antd"; // Import Spin only
+import { LoadingOutlined } from '@ant-design/icons'; // Import LoadingOutlined icon
 import { connect } from "react-redux";
 import * as actions from "../store/actions/auth";
 import * as navActions from "../store/actions/nav";
 import * as messageActions from "../store/actions/message";
 import Contact from "../components/Contact";
 
-const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />; // Updated loading icon
 
 class Sidepanel extends React.Component {
   state = {
-    loginForm: true
+    loginForm: true,
   };
 
   waitForAuthDetails() {
     const component = this;
-    setTimeout(function() {
+    setTimeout(function () {
       if (
         component.props.token !== null &&
         component.props.token !== undefined
@@ -44,7 +45,7 @@ class Sidepanel extends React.Component {
     this.setState({ loginForm: !this.state.loginForm });
   };
 
-  authenticate = e => {
+  authenticate = (e) => {
     e.preventDefault();
     if (this.state.loginForm) {
       this.props.login(e.target.username.value, e.target.password.value);
@@ -59,7 +60,7 @@ class Sidepanel extends React.Component {
   };
 
   render() {
-    let activeChats = this.props.chats.map(c => {
+    let activeChats = this.props.chats.map((c) => {
       return (
         <Contact
           key={c.id}
@@ -81,10 +82,7 @@ class Sidepanel extends React.Component {
               alt=""
             />
             <p>Mike Ross</p>
-            <i
-              className="fa fa-chevron-down expand-button"
-              aria-hidden="true"
-            />
+            <i className="fa fa-chevron-down expand-button" aria-hidden="true" />
             <div id="status-options">
               <ul>
                 <li id="status-online" className="active">
@@ -178,17 +176,17 @@ class Sidepanel extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.auth.token !== null,
     loading: state.auth.loading,
     token: state.auth.token,
     username: state.auth.username,
-    chats: state.message.chats
+    chats: state.message.chats,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     login: (userName, password) =>
       dispatch(actions.authLogin(userName, password)),
@@ -197,7 +195,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(actions.authSignup(username, email, password1, password2)),
     addChat: () => dispatch(navActions.openAddChatPopup()),
     getUserChats: (username, token) =>
-      dispatch(messageActions.getUserChats(username, token))
+      dispatch(messageActions.getUserChats(username, token)),
   };
 };
 

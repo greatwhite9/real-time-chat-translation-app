@@ -18,8 +18,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'corsheaders',
     'channels',
-    'rest_auth',
-    'rest_auth.registration',
+    'dj_rest_auth',
     'rest_framework',
     'rest_framework.authtoken',
 
@@ -35,6 +34,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'justchat.urls'
@@ -88,10 +88,12 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'build/static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'build/static'),  # This should point to your React build static files
+]
 # authentication settings
 
 SITE_ID = 1
@@ -105,7 +107,13 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
     ),
 }
-CORS_ORIGIN_WHITELIST = ('localhost:3000')
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+    'https://justdjango-chat.herokuapp.com',
+]
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
